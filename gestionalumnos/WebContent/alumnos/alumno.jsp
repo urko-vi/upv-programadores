@@ -1,4 +1,5 @@
 <%@ include file="../includes/header.jsp" %>
+<body>
 <div class="container-fluid">
 	<main class="row">
 		<section class="col-xs-12">

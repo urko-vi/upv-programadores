@@ -28,6 +28,7 @@ public class CreateAlumnosAccion extends ActionAbstractFactory {
 			datos.put("alumno", alumno);
 
 			// procesar los datos y crear la vista
+
 			vista = new View("/alumnos/crearalumno.jsp", datos);
 		}
 

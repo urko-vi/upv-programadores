@@ -1,7 +1,7 @@
 <%@ page import="eus.ehu.informatica.gestionalumno.service.mensajes.Mensaje" %>
 <%
-Mensaje msg = (Mensaje)request.getAttribute("");
-//InitListener initListener = InitListener.getInstance(getServletContext());
+Mensaje msg = (Mensaje)request.getAttribute("mensaje");
+
 
 if (msg!=null){
 %>

@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="eus.ehu.informatica.gestionalumno.pojo.AlumnoNacional"%>
 <%@ include file="../includes/header.jsp" %>
 <body>
 <div class="container-fluid">
@@ -8,7 +10,7 @@
 			<a href="listadoAlumnos.do" class="btn btn-default">
 				Crear Alumno</a>
 			<div class="row">
-
+			<jsp:include page="../includes/mensajes.jsp" />
 			 <%
 			 List<AlumnoNacional> alumnos= null;
 			 alumnos = (List<AlumnoNacional>)request.getAttribute("alumnos");
