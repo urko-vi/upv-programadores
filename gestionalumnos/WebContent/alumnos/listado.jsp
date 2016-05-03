@@ -16,7 +16,7 @@
 			 alumnos = (List<AlumnoNacional>)request.getAttribute("alumnos");
 			 if(alumnos!=null){
 				 for(AlumnoNacional alumno: alumnos){
-					out.println("<p class='col-xs-12'><a href='actualizarAlumno.do?id='"+alumno.getCodigo()+"'>"+alumno.getNombre()+" "+alumno.getApellidos()+"</a></p>");
+					out.println("<p class='col-xs-12'><a href='actualizarAlumno.do?id='"+alumno.getCodigo()+"'>"+alumno.toHTML()+"</a></p>");
 				 }
 				
 			 }

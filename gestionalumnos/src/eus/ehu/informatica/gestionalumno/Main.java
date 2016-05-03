@@ -9,10 +9,15 @@ public class Main {
 	private static String ejecutarValidacion(final Validable valido) {
 		String mensaje = "Hay un error";
 		// valido.
-		if (valido.validar()) {
-			mensaje = "Todo es correcto";
-		} else {
-			mensaje = "Hay un error";
+		try {
+			if (valido.validar()) {
+				mensaje = "Todo es correcto";
+			} else {
+				mensaje = "Hay un error";
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		return mensaje;

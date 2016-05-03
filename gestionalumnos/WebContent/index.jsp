@@ -9,7 +9,7 @@
 			<a href="listadoAsignaturas.do" class="btn btn-default">
 				Ver las asignaturas</a>
 			<div class="row">
-
+			<jsp:include page="includes/mensajes.jsp" />
 			 
 			</div>
 		</section>

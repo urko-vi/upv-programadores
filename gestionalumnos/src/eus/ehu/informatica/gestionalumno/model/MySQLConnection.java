@@ -14,21 +14,23 @@ public class MySQLConnection implements IConnection {
 	private static final String DATA_SOURCE = "java:comp/env/jdbc/Alumnos";
 	private static MySQLConnection instance = null;
 
-	private MySQLConnection() {
+	private MySQLConnection() throws NamingException, SQLException {
 		super();
 		if (conexion == null) {
 			conectar();
 		}
 	}
 
-	private synchronized static void createInstance() {
+	private synchronized static void createInstance() throws NamingException,
+			SQLException {
 		if (instance == null) {
 			instance = new MySQLConnection();
 
 		}
 	}
 
-	public static MySQLConnection getInstance() {
+	public static MySQLConnection getInstance() throws NamingException,
+			SQLException {
 		if (instance == null)
 			createInstance();
 		return instance;
@@ -39,19 +41,12 @@ public class MySQLConnection implements IConnection {
 	}
 
 	@Override
-	public void conectar() {
+	public void conectar() throws NamingException, SQLException {
 		if (conexion == null) {
-			try {
-				InitialContext ctx = new InitialContext();
-				DataSource datasource = (DataSource) ctx.lookup(DATA_SOURCE);
-				conexion = datasource.getConnection();
-			} catch (NamingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			InitialContext ctx = new InitialContext();
+			DataSource datasource = (DataSource) ctx.lookup(DATA_SOURCE);
+			conexion = datasource.getConnection();
+
 		}
 	}
 
@@ -71,7 +66,7 @@ public class MySQLConnection implements IConnection {
 	}
 
 	@Override
-	public Connection getConnection() {
+	public Connection getConnection() throws NamingException, SQLException {
 		if (conexion == null) {
 			conectar();
 		}

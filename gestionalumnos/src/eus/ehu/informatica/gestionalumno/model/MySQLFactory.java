@@ -1,5 +1,10 @@
 package eus.ehu.informatica.gestionalumno.model;
 
+import java.net.ConnectException;
+import java.sql.SQLException;
+
+import javax.naming.NamingException;
+
 import eus.ehu.informatica.gestionalumno.model.interfaces.IConnection;
 import eus.ehu.informatica.gestionalumno.model.rdbms.AlumnoNacionalDAOImp;
 import eus.ehu.informatica.gestionalumno.model.rdbms.AsignaturaDAOImp;
@@ -31,12 +36,13 @@ public class MySQLFactory extends DAOFactory {
 	}
 
 	@Override
-	public IConnection getIConnection() {
+	public IConnection getIConnection() throws NamingException, SQLException {
 		return MySQLConnection.getInstance();
 	}
 
 	@Override
-	public AlumnoNacionalDAO getAlumnoNacionalDAO(int whichfactory) {
+	public AlumnoNacionalDAO getAlumnoNacionalDAO(int whichfactory)
+			throws ConnectException, NamingException, SQLException {
 
 		return AlumnoNacionalDAOImp.getInstance(whichfactory);
 	}

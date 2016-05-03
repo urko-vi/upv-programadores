@@ -1,8 +1,11 @@
 package eus.ehu.informatica.gestionalumno.controller.frontcontroller;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.sql.SQLException;
 import java.util.List;
 
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,8 +41,21 @@ public class AlumnoServlet extends HttpServlet {
 
 	private List<AlumnoNacional> obtenerAlumnos() {
 		List<AlumnoNacional> alumnos = null;
-		AlumnoNacionalService ans = new AlumnoNacionalServiceImpl();
-		alumnos = ans.getAll();
+		AlumnoNacionalService ans;
+		try {
+			ans = new AlumnoNacionalServiceImpl();
+			alumnos = ans.getAll();
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return alumnos;
 	}
 

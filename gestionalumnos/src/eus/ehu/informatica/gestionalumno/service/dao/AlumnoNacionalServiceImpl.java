@@ -1,7 +1,11 @@
 package eus.ehu.informatica.gestionalumno.service.dao;
 
+import java.net.ConnectException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.NamingException;
 
 import eus.ehu.informatica.gestionalumno.model.DAOFactory;
 import eus.ehu.informatica.gestionalumno.model.rdbms.interfaces.AlumnoNacionalDAO;
@@ -14,9 +18,13 @@ public class AlumnoNacionalServiceImpl implements AlumnoNacionalService {
 	private AlumnoNacionalDAO alumnoDAO;
 
 	/**
+	 * @throws ConnectException
+	 * @throws SQLException
+	 * @throws NamingException
 	 *
 	 */
-	public AlumnoNacionalServiceImpl() {
+	public AlumnoNacionalServiceImpl() throws ConnectException,
+			NamingException, SQLException {
 		super();
 		factoria = DAOFactory.getDAOFactory(DAOFactory.MYSQL);
 		alumnoDAO = factoria.getAlumnoNacionalDAO(DAOFactory.MYSQL);

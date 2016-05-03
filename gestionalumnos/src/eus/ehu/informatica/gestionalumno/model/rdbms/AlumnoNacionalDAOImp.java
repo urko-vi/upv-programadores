@@ -1,11 +1,16 @@
 package eus.ehu.informatica.gestionalumno.model.rdbms;
 
+import java.net.ConnectException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.NamingException;
+
+import org.apache.log4j.Logger;
 
 import eus.ehu.informatica.gestionalumno.model.DAOFactory;
 import eus.ehu.informatica.gestionalumno.model.interfaces.IConnection;
@@ -16,21 +21,30 @@ public class AlumnoNacionalDAOImp implements AlumnoNacionalDAO {
 	private static AlumnoNacionalDAOImp instance = null;
 	private IConnection conexion;
 	private Connection conn;
+	private Logger log = Logger.getLogger(AlumnoNacionalDAOImp.class);
 
-	private AlumnoNacionalDAOImp(int whichfactory) {
+	private AlumnoNacionalDAOImp(int whichfactory) throws ConnectException,
+			NamingException, SQLException {
 		super();
 		conexion = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getIConnection();
+
 		conn = conexion.getConnection();
+		if (conn == null) {
+			throw new ConnectException(
+					"El servidor se ha iniciado después del servidor web");
+		}
 	}
 
-	private synchronized static void createInstance(int whichfactory) {
+	private synchronized static void createInstance(int whichfactory)
+			throws ConnectException, NamingException, SQLException {
 		if (instance == null) {
 			instance = new AlumnoNacionalDAOImp(whichfactory);
 
 		}
 	}
 
-	public static AlumnoNacionalDAOImp getInstance(int whichfactory) {
+	public static AlumnoNacionalDAOImp getInstance(int whichfactory)
+			throws ConnectException, NamingException, SQLException {
 		if (instance == null)
 			createInstance(whichfactory);
 		return instance;
@@ -48,10 +62,8 @@ public class AlumnoNacionalDAOImp implements AlumnoNacionalDAO {
 		int nFilas = 0;
 		int codigo = -1;
 		try {
-			cs = conn.prepareCall("{call createAlumno(?,?,?)}");
-			cs.setString("pnombre", alumno.getNombre());
-			cs.setString("papellidos", alumno.getApellidos());
-			cs.setInt("purte", alumno.getAnyo());
+			cs = conn.prepareCall("{call createAlumno(?,?,?,?)}");
+			cs = parseCallableStatement(alumno, cs);
 			nFilas = cs.executeUpdate();
 
 			rs = cs.getGeneratedKeys();
@@ -66,6 +78,20 @@ public class AlumnoNacionalDAOImp implements AlumnoNacionalDAO {
 			e.printStackTrace();
 		}
 		return aux;
+	}
+
+	/**
+	 * @param alumno
+	 * @param cs
+	 * @throws SQLException
+	 */
+	private CallableStatement parseCallableStatement(AlumnoNacional alumno,
+			CallableStatement cs) throws SQLException {
+		cs.setString("pnombre", alumno.getNombre());
+		cs.setString("papellidos", alumno.getApellidos());
+		cs.setInt("pcodigo", alumno.getCodigo());
+		cs.setInt("purte", alumno.getAnyo());
+		return cs;
 	}
 
 	@Override
@@ -136,8 +162,20 @@ public class AlumnoNacionalDAOImp implements AlumnoNacionalDAO {
 
 	@Override
 	public AlumnoNacional update(AlumnoNacional alumno) {
-		// TODO Auto-generated method stub
-		return null;
+		AlumnoNacional aux = null;
+		CallableStatement cSmt = null;
+		ResultSet rs = null;
+
+		try {
+			cSmt = conn.prepareCall("{call updateAlumno(?,?,?,?)}");
+			cSmt = parseCallableStatement(alumno, cSmt);
+			int numero = cSmt.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return aux;
 	}
 
 }
