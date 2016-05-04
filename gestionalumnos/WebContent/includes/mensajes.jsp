@@ -11,7 +11,5 @@ if (msg!=null){
 </div>
 
 <%
-}else{
-	out.print("msg nulo");
 }
 %>
